@@ -1,23 +1,24 @@
-<body>
-    <h1>Student Task Manager</h1>
+{% extends "base.html" %}
 
-    <form method="POST">
-        <input type="text" name="task" placeholder="Enter a task" required>
-        <button type="submit">Add Task</button>
-    </form>
+{% block content %}
 
-    <h2>Tasks:</h2>
-    <ul>
-        {% for task in tasks %}
-            <li>
-                {% if task['completed'] %}
-                    <s>{{ task['content'] }}</s>
-                {% else %}
-                    {{ task['content'] }}
-                    <a href="/complete/{{ task['id'] }}">✔</a>
-                {% endif %}
-                <a href="/delete/{{ task['id'] }}">❌</a>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
+<form method="POST" class="task-form">
+    <input type="text" name="task" placeholder="Enter a task" required>
+    <button type="submit">Add Task</button>
+</form>
+
+<ul class="task-list">
+    {% for task in tasks %}
+        <li>
+            {% if task['completed'] %}
+                <s>{{ task['content'] }}</s>
+            {% else %}
+                {{ task['content'] }}
+                <a href="/complete/{{ task['id'] }}">✔</a>
+            {% endif %}
+            <a href="/delete/{{ task['id'] }}">❌</a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
