@@ -14,13 +14,33 @@ def init_db():
     conn.execute("""
         CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            content TEXT NOT NULL
+            content TEXT NOT NULL,
+            completed INTEGER DEFAULT 0
         )
     """)
     conn.commit()
     conn.close()
 
+
 init_db()
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    conn = get_db_connection()
+    conn.execute("DELETE FROM tasks WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+    return redirect("/")
+
+@app.route("/complete/<int:id>")
+def complete(id):
+    conn = get_db_connection()
+    conn.execute(
+        "UPDATE tasks SET completed = 1 WHERE id = ?", (id,)
+    )
+    conn.commit()
+    conn.close()
+    return redirect("/")
 
 @app.route("/", methods=["GET", "POST"])
 def home():
